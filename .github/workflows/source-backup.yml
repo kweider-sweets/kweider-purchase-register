@@ -1,0 +1,24 @@
+name: Create static backup artifact
+
+on:
+  push:
+    paths:
+      - ".github/workflows/source-backup.yml"
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout static site
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+      - name: Create archive
+        run: |
+          zip -r KWEIDER_Purchase_Register_Static.zip . -x ".git/*"
+      - name: Upload static archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: KWEIDER_Purchase_Register_Static
+          path: KWEIDER_Purchase_Register_Static.zip
+          retention-days: 30
